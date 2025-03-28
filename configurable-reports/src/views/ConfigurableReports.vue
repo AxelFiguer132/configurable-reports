@@ -2,7 +2,7 @@
 import { useReportStore } from "../store/report-store";
 import { useRouter } from "vue-router";
 import { computed } from "vue";
-import BaseButton from "../components/BaseButton.vue";
+import BaseButton from "../components/base/BaseButton.vue";
 
 const router = useRouter();
 const reportStore = useReportStore();

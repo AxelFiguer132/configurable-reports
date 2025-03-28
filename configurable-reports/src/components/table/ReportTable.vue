@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import TableActions from "./TableActions.vue";
-import PaginationFooter from "../components/PaginationFooter.vue";
+import TableActions from "../table/TableActions.vue";
+import PaginationFooter from "../table/PaginationFooter.vue";
 
 defineProps<{
   columns: { label: string; key: string }[];

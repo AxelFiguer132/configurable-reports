@@ -82,6 +82,23 @@ const valores = {
   Empleado: ["NOMBRECOM", "EDAD", "SEXO", "NUMEROEM"],
   Concepto: ["NETO", "TD", "TP"],
 };
+
+const modalOpen = ref(false);
+const modalValues = ref<string[]>([]);
+const currentLine = ref<any>(null);
+
+const openModal = (line: any) => {
+  modalValues.value = valores[line.tipo as keyof typeof valores] || [];
+  currentLine.value = line;
+  modalOpen.value = true;
+};
+
+const selectFromModal = (value: string) => {
+  if (currentLine.value) {
+    currentLine.value.valor = value;
+    modalOpen.value = false;
+  }
+}
 </script>
 
 <template>
@@ -168,7 +185,35 @@ const valores = {
             </select>
           </div>
 
-          
+          <!-- Eliminar espacios -->
+          <div
+            class="col-span-6 sm:col-span-3 lg:col-span-2 flex items-center mt-6"
+          >
+            <input
+              type="checkbox"
+              id="removeSpaces"
+              v-model="segment.removeSpaces"
+              class="mr-2"
+            />
+            <label for="removeSpaces" class="text-sm text-gray-800">
+              Eliminar espacios
+            </label>
+          </div>
+
+          <!-- Eliminar caracteres especiales -->
+          <div
+            class="col-span-6 sm:col-span-3 lg:col-span-2 flex items-center mt-6"
+          >
+            <input
+              type="checkbox"
+              id="removeSpecialChars"
+              v-model="segment.removeSpecialChars"
+              class="mr-2"
+            />
+            <label for="removeSpecialChars" class="text-sm text-gray-800">
+              Eliminar caracteres especiales
+            </label>
+          </div>
         </div>
 
         <!-- Tabla de Líneas Dinámicas -->
@@ -293,18 +338,21 @@ const valores = {
                   <td
                     class="px-3 py-2 text-left text-sm font-medium text-gray-800 mb-1.5"
                   >
-                    <select
-                      v-model="line.valor"
-                      class="bg-white pl border-gray-300 focus:outline-none focus:ring-1 focus:ring-blue-600 focus:border-transparent block w-full shadow-sm text-sm border rounded-md py-2 px-2"
-                    >
-                      <option
-                        v-for="valor in valores[line.tipo]"
-                        :key="valor"
-                        :value="valor"
+                    <div class="relative flex items-center">
+                      <input
+                        v-model="line.valor"
+                        class="bg-white border border-gray-300 focus:outline-none focus:ring-1 focus:ring-blue-600 focus:border-transparent w-full shadow-sm text-sm rounded-md py-2 px-2 pr-8"
+                        placeholder="Escribe o selecciona..."
+                      />
+                      <button
+                        type="button"
+                        class="absolute right-2 text-blue-600 hover:text-blue-800"
+                        @click="openModal(line)"
+                        title="Buscar opción"
                       >
-                        {{ valor }}
-                      </option>
-                    </select>
+                        🔍
+                      </button>
+                    </div>
                   </td>
                   <td
                     class="px-3 py-2 text-left text-sm font-medium text-gray-800 mb-1.5"
@@ -411,6 +459,36 @@ const valores = {
             Guardar
           </button>
         </div>
+      </div>
+    </div>
+  </div>
+  <div
+    v-if="modalOpen"
+    class="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center z-50"
+  >
+    <div class="bg-white p-6 rounded-md shadow-md w-full max-w-md">
+      <h3 class="text-lg font-semibold text-gray-800 mb-4">
+        Opciones para "{{ currentLine?.tipo }}"
+      </h3>
+
+      <ul class="space-y-2 max-h-60 overflow-y-auto">
+        <li
+          v-for="value in modalValues"
+          :key="value"
+          class="cursor-pointer text-blue-600 hover:text-blue-800 border-b py-1"
+          @click="selectFromModal(value)"
+        >
+          {{ value }}
+        </li>
+      </ul>
+
+      <div class="mt-6 text-right">
+        <button
+          @click="modalOpen = false"
+          class="bg-gray-200 text-gray-800 hover:bg-gray-300 px-4 py-2 rounded-md text-sm"
+        >
+          Cerrar
+        </button>
       </div>
     </div>
   </div>

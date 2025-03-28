@@ -2,9 +2,9 @@
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 import { useReportStore } from "../store/report-store";
-import BaseButton from "../components/BaseButton.vue";
-import SearchBar from "../components/SearchBar.vue";
-import ReportTable from "../components/ReportTable.vue";
+import BaseButton from "../components/base/BaseButton.vue";
+import SearchBar from "../components/base/SearchBar.vue";
+import ReportTable from "../components/table/ReportTable.vue";
 
 const router = useRouter();
 const reportStore = useReportStore();
