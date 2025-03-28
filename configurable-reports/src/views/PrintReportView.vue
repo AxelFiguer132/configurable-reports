@@ -6,7 +6,11 @@ const route = useRoute();
 const router = useRouter();
 
 // 📌 Obtener el código del reporte desde la URL
-const reportCode = ref(route.params.code || "Desconocido");
+const reportCode = route.params.code as string;
+const rawName = decodeURIComponent(route.params.name as string);
+
+// Reemplaza guiones por espacios
+const reportName = rawName.replace(/-/g, " ");
 
 // 📌 Estado de los filtros de impresión
 const filters = ref({
@@ -21,7 +25,7 @@ const formats = ["PDF", "Excel", "CSV"];
 
 // 📌 Generar reporte
 const generateReport = () => {
-  alert(`Generando reporte ${reportCode.value} en formato ${filters.value.format}`);
+  alert(`Generando reporte ${reportCode} en formato ${filters.value.format}`);
 };
 
 // 📌 Volver a la pantalla anterior
@@ -31,10 +35,9 @@ const goBack = () => {
 </script>
 
 <template>
-  <main class="h-screen w-screen text-gray-900 bg-gray-50 flex">
     <div class="w-full max-w-2xl mx-auto mt-10 p-5 bg-white rounded-lg shadow-md">
       <h1 class="text-2xl font-semibold text-blue-900 mb-5">
-        Filtros de Impresión - {{ reportCode }}
+        Filtros de Impresión - {{ reportCode }} - {{ reportName }}
       </h1>
 
       <!-- 📌 Formulario de Filtros -->
@@ -68,18 +71,4 @@ const goBack = () => {
         </div>
       </form>
     </div>
-  </main>
 </template>
-
-<style scoped>
-/* 📌 Botones reutilizables */
-.btn-blue {
-  @apply bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700;
-}
-.btn-gray {
-  @apply bg-gray-600 text-white px-4 py-2 rounded hover:bg-gray-700;
-}
-.form-input {
-  @apply border p-2 rounded w-full focus:ring-blue-600 focus:border-blue-600;
-}
-</style>

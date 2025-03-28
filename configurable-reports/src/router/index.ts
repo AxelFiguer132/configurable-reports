@@ -12,7 +12,7 @@ const routes = [
   { path: "/manage-report/:code", component: ManageReportView },
   { path: "/reports/:code/segments", component: SegmentListView },
   { path: "/reports/:code/segments/:segmentId/configure", component: ConfigReportView },
-  { path: "/print-report/:code", component: PrintReportView },
+  { path: "/print-report/:code/:name", name: "PrintReport", component: PrintReportView },
 ];
 
 const router = createRouter({
